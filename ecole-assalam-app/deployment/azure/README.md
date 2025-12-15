@@ -160,18 +160,13 @@ EOF
 git init
 git add .
 git commit -m "Initial backend deployment"
-az webapp deployment source config-local-git \
-  --name ecole-assalam-backend \
-  --resource-group ecole-assalam-rg
-
+az webapp deployment source config-local-git --name ecole-assalam-backend --resource-group ecole-assalam-rg
+ "url": "https://None@ecole-assalam-backend.scm.azurewebsites.net/ecole-assalam-backend.git"
 # Obtenir l'URL Git de déploiement
-DEPLOY_URL=$(az webapp deployment source show \
-  --name ecole-assalam-backend \
-  --resource-group ecole-assalam-rg \
-  --query url -o tsv)
+DEPLOY_URL=$(az webapp deployment source show --name ecole-assalam-backend --resource-group ecole-assalam-rg  --query url -o tsv)
 
 # Ajouter le remote et push
-git remote add azure $DEPLOY_URL
+git remote add azure "https://None@ecole-assalam-backend.scm.azurewebsites.net/ecole-assalam-backend.git"
 git push azure main:master
 ```
 
