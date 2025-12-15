@@ -1,0 +1,11 @@
+{
+  "name": "ecole-assalam-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:backend": "cd ecole-assalam-app/backend && npm install",
+    "build:backend": "cd ecole-assalam-app/backend && npm run build",
+    "build": "npm run install:backend && npm run build:backend",
+    "start": "node ecole-assalam-app/backend/dist/server.js"
+  }
+}

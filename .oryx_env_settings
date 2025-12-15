@@ -1,0 +1,3 @@
+PROJECT=ecole-assalam-app/backend
+PRE_BUILD_COMMAND="cd ecole-assalam-app/backend && npm install"
+POST_BUILD_COMMAND="cd ecole-assalam-app/backend && npm run build && npx prisma generate"
