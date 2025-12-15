@@ -23,19 +23,17 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        cache-dependency-path: backend/package-lock.json
 
     - name: Install dependencies
-      working-directory: ./backend
-      run: npm ci
+      working-directory: ./ecole-assalam-app/backend
+      run: npm install
 
     - name: Generate Prisma Client
-      working-directory: ./backend
+      working-directory: ./ecole-assalam-app/backend
       run: npm run prisma:generate
 
     - name: Build TypeScript
-      working-directory: ./backend
+      working-directory: ./ecole-assalam-app/backend
       run: npm run build
 
     - name: Deploy to Azure Web App
@@ -43,7 +41,7 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME_BACKEND }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_BACKEND }}
-        package: ./backend
+        package: ./ecole-assalam-app/backend
 
   build-and-deploy-frontend:
     runs-on: ubuntu-latest
@@ -60,11 +58,11 @@ jobs:
         channel: 'stable'
 
     - name: Install dependencies
-      working-directory: ./frontend
+      working-directory: ./ecole-assalam-app/frontend
       run: flutter pub get
 
     - name: Build Flutter Web
-      working-directory: ./frontend
+      working-directory: ./ecole-assalam-app/frontend
       run: flutter build web --release
 
     - name: Deploy to Azure Static Web App
@@ -72,4 +70,4 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME_FRONTEND }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_FRONTEND }}
-        package: ./frontend/build/web
+        package: ./ecole-assalam-app/frontend/build/web

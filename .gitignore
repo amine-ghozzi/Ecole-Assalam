@@ -1,0 +1,44 @@
+# Azure Publish Profiles (contains credentials)
+*.publishsettings
+*.pubxml
+*.PublishSettings
+publish.xml
+*.azurePubxml
+
+# Node modules
+node_modules/
+npm-debug.log*
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Prisma
+.prisma/
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+coverage/
+lib/generated_plugin_registrant.dart
