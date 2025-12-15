@@ -1,0 +1,11 @@
+<publishData>
+<publishProfile profileName="ecole-assalam-backend - Web Deploy" publishMethod="MSDeploy" publishUrl="ecole-assalam-backend.scm.azurewebsites.net:443" msdeploySite="ecole-assalam-backend" userName="REDACTED" userPWD="REDACTED" destinationAppUrl="https://ecole-assalam-backend.azurewebsites.net" SQLServerDBConnectionString="REDACTED" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites">
+<databases />
+</publishProfile>
+<publishProfile profileName="ecole-assalam-backend - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-yt1-077.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="REDACTED" userPWD="REDACTED" destinationAppUrl="https://ecole-assalam-backend.azurewebsites.net" SQLServerDBConnectionString="REDACTED" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites">
+<databases />
+</publishProfile>
+<publishProfile profileName="ecole-assalam-backend - Zip Deploy" publishMethod="ZipDeploy" publishUrl="ecole-assalam-backend.scm.azurewebsites.net:443" userName="REDACTED" userPWD="REDACTED" destinationAppUrl="https://ecole-assalam-backend.azurewebsites.net" SQLServerDBConnectionString="REDACTED" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites">
+<databases />
+</publishProfile>
+</publishData>
