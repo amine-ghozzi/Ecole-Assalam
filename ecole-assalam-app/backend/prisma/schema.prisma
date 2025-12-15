@@ -1,0 +1,103 @@
+// Schéma Prisma pour École Assalam
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modèle Niveau (ex: Maternelle, CP, CE1, CE2, etc.)
+model Niveau {
+  id          String   @id @default(uuid())
+  nom         String   @unique
+  description String?
+  ordre       Int      @unique // Pour trier les niveaux (1=Maternelle, 2=CP, etc.)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  groupes            Groupe[]
+  examensSource      ExamenPassage[] @relation("NiveauSource")
+  examensDestination ExamenPassage[] @relation("NiveauDestination")
+
+  @@map("niveaux")
+}
+
+// Modèle Groupe/Classe
+model Groupe {
+  id              String   @id @default(uuid())
+  nom             String   // Ex: "CP-A", "CE1-B"
+  niveauId        String
+  capaciteMax     Int      @default(30)
+  anneeScolaire   String   // Ex: "2024-2025"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  niveau  Niveau   @relation(fields: [niveauId], references: [id], onDelete: Cascade)
+  eleves  Eleve[]
+  horaires Horaire[]
+
+  @@unique([nom, anneeScolaire])
+  @@map("groupes")
+}
+
+// Modèle Élève
+model Eleve {
+  id              String    @id @default(uuid())
+  nom             String
+  prenom          String
+  dateNaissance   DateTime
+  groupeId        String?
+  photo           String?   // URL ou chemin de la photo
+  contactParent   String?   // Numéro de téléphone ou email
+  adresse         String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  groupe Groupe? @relation(fields: [groupeId], references: [id], onDelete: SetNull)
+
+  @@map("eleves")
+}
+
+// Modèle Horaire (pour chaque groupe)
+model Horaire {
+  id           String   @id @default(uuid())
+  groupeId     String
+  joursSemaine String[] // Ex: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"]
+  heureEntree  String   // Format: "08:00"
+  heureSortie  String   // Format: "16:00"
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  groupe Groupe @relation(fields: [groupeId], references: [id], onDelete: Cascade)
+
+  @@map("horaires")
+}
+
+// Modèle Examen de Passage de Niveau
+model ExamenPassage {
+  id                    String   @id @default(uuid())
+  niveauSourceId        String
+  niveauDestinationId   String
+  dateExamen            DateTime
+  dateLimiteInscription DateTime
+  statut                StatutExamen @default(PLANIFIE)
+  description           String?
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+
+  niveauSource      Niveau @relation("NiveauSource", fields: [niveauSourceId], references: [id], onDelete: Cascade)
+  niveauDestination Niveau @relation("NiveauDestination", fields: [niveauDestinationId], references: [id], onDelete: Cascade)
+
+  @@map("examens_passage")
+}
+
+// Énumération pour le statut de l'examen
+enum StatutExamen {
+  PLANIFIE
+  EN_COURS
+  TERMINE
+  ANNULE
+}
