@@ -1,0 +1,11 @@
+{
+    "name": "École Assalam",
+    "short_name": "École Assalam",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#FFFFFF",
+    "theme_color": "#2E7D32",
+    "description": "Application de gestion des classes",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false
+}

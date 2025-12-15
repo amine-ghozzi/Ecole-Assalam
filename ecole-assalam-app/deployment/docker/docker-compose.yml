@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL
+  postgres:
+    image: postgres:14-alpine
+    container_name: ecole-assalam-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: assalamadmin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-VotreMotDePasse123!}
+      POSTGRES_DB: ecole_assalam
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ecole-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U assalamadmin -d ecole_assalam"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Node.js
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: ../deployment/docker/Dockerfile.backend
+    container_name: ecole-assalam-backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://assalamadmin:${DB_PASSWORD:-VotreMotDePasse123!}@postgres:5432/ecole_assalam?schema=public
+      PORT: 3000
+      NODE_ENV: production
+      ALLOWED_ORIGINS: http://localhost:8080,http://frontend:80
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ecole-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend Flutter Web (avec Nginx)
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: ../deployment/docker/Dockerfile.frontend
+    container_name: ecole-assalam-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - ecole-network
+    environment:
+      API_URL: http://backend:3000/api
+
+networks:
+  ecole-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
